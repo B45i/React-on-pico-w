@@ -1,10 +1,16 @@
+import json
 from phew import server, connect_to_wifi, logging
 from phew.template import render_template
 from secrets import WIFI_SSID, WIFI_PASSWORD
 
 connect_to_wifi(WIFI_SSID, WIFI_PASSWORD)
 
-buttons = []
+button_state = {
+    "BTN_1": {"name": "Washing Machine", "state": False},
+    "BTN_2": {"name": "TV", "state": False},
+    "BTN_3": {"name": "Bedroom Light", "state": False},
+    "BTN_4": {"name": "Water Heater", "state": False},
+}
 
 
 # Get home page
@@ -12,21 +18,31 @@ buttons = []
 def index(request):
     return await render_template("build/index.html")
 
+
 # Get static assets like css, js and images
 @server.route("/static/<folder>/<file>", methods=["GET"])
 def assets(request, folder, file):
     return server.serve_file(f"build/static/{folder}/{file}")
 
 
-@server.route("/api/buttonState", methods=["GET"])
-def button_state(request):
-    return str(buttons), 200, {"Content-Type": "application/json"}
+# Get current state of the buttons
+@server.route("/api/get_buttons", methods=["GET"])
+def get_buttons(request):
+    return json.dumps(button_state), 200, {"Content-Type": "application/json"}
 
+
+# Update button state
+@server.route("/api/update_button/<id>", methods=["POST"])
+def update_button_state(request, id):
+    new_state = request.data.get("state", None)
+    button_state[id]["state"] = new_state
+    return json.dumps(button_state), 200, {"Content-Type": "application/json"}
 
 
 # Handle 404
 @server.catchall()
 def catchall(request):
-    return render_template("build/index.html")
+    return "Page not found", 404
+
 
 server.run()
