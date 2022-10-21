@@ -1,7 +1,5 @@
 export const getButtonsAsync = async () => {
-    const response = await fetch(
-        `https://esc-relay-controller.herokuapp.com/buttons`
-    );
+    const response = await fetch(`api/buttonState`);
     const value = await response.json();
     return value;
 };
