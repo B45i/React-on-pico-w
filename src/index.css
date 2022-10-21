@@ -1,13 +1,67 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    background: none;
+    border: none;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #393741;
+    font-family: sans-serif;
+    color: #fff;
+}
+
+.device-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem;
+    color: #8f96fa;
+    border-radius: 10px;
+    box-shadow: 7px 7px 14px #17161a, -7px -7px 14px #5b5868;
+    transition: all 0.3s;
+}
+
+.device-button:hover {
+    background: linear-gradient(145deg, #33323b, #3d3b46);
+    box-shadow: 10px 10px 20px #17161a, -10px -10px 20px #5b5868;
+}
+
+.indicator {
+    min-width: 1rem;
+    min-height: 1rem;
+    background-color: #b72b71;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.active {
+    box-shadow: inset 4px 4px 13px #1e1d22, inset -2px -6px 13px #545160;
+}
+
+.active .indicator {
+    background-color: #05b0b0;
+}
+
+@media (max-width: 480px) {
+    .device-button {
+        flex-direction: column;
+        height: 8rem;
+        width: 8rem;
+        padding: 1rem;
+        align-items: flex-start;
+    }
+    .indicator {
+        align-self: flex-end;
+    }
 }
