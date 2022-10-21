@@ -1,7 +1,9 @@
 import json
 from phew import server, connect_to_wifi, logging
 from phew.template import render_template
+from machine import Pin
 from secrets import WIFI_SSID, WIFI_PASSWORD
+
 
 connect_to_wifi(WIFI_SSID, WIFI_PASSWORD)
 
@@ -12,6 +14,12 @@ button_state = {
     "BTN_4": {"name": "Water Heater", "state": False},
 }
 
+pins = {
+    "BTN_1": Pin("LED", Pin.OUT),
+    "BTN_2": Pin(1, Pin.OUT),
+    "BTN_3": Pin(2, Pin.OUT),
+    "BTN_4": Pin(3, Pin.OUT),
+}
 
 # Get home page
 @server.route("/")
@@ -34,8 +42,10 @@ def get_buttons(request):
 # Update button state
 @server.route("/api/update_button/<id>", methods=["POST"])
 def update_button_state(request, id):
-    new_state = request.data.get("state", None)
+    new_state = request.data.get("state", False)
+    print(new_state)
     button_state[id]["state"] = new_state
+    pins[id].value(new_state)
     return json.dumps(button_state), 200, {"Content-Type": "application/json"}
 
 
