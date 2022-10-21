@@ -1,0 +1,3 @@
+from secrets import WIFI_SSID, WIFI_PASSWORD
+
+print(WIFI_SSID, WIFI_PASSWORD)
