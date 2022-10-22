@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import DeviceButton from './components/DeviceButton';
-import { getButtonsAsync } from './api';
+import { getButtonsAsync, updateButtonAsync } from './api';
 
 import './App.css';
 
@@ -11,23 +11,18 @@ function App() {
 
     const [buttons, setButtons] = useState([]);
 
-    const handleButtonClick = button => {
-        setButtons(oldState => {
-            return oldState.map(btn => {
-                if (btn === button) {
-                    btn.state = !btn.state;
-                }
-                return btn;
-            });
-        });
+    const handleButtonClick = async (id, value) => {
+        try {
+            const data = await updateButtonAsync(id, value);
+            setButtons(data);
+        } catch (error) {
+            console.error(error.message);
+        }
     };
 
     const fetchButtons = async () => {
         try {
             const data = await getButtonsAsync();
-            data.forEach(btn => {
-                btn.state = Math.random() < 0.5;
-            });
             setButtons(data);
         } catch (error) {
             console.error(error.message);
@@ -36,11 +31,12 @@ function App() {
 
     return (
         <div className="App">
-            {buttons.map(button => (
+            {Object.keys(buttons).map(id => (
                 <DeviceButton
-                    button={button}
+                    button={buttons[id]}
                     onButtonClick={handleButtonClick}
-                    key={button.id}
+                    key={id}
+                    id={id}
                 />
             ))}
         </div>

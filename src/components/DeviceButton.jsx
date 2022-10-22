@@ -1,7 +1,7 @@
-const DeviceButton = ({ button, onButtonClick }) => {
+const DeviceButton = ({ button, onButtonClick, id }) => {
     return (
         <button
-            onClick={e => onButtonClick(button)}
+            onClick={e => onButtonClick(id, !button.state)}
             className={`device-button ${button.state ? 'active' : ''}`}
         >
             <div>{button.name}</div>
