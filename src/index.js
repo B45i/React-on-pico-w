@@ -15,3 +15,9 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+console.log(
+    '%c App by B45i ',
+    'color: #ff4974; background-color: #00fddd; font-size: 5rem'
+);
+console.log('https://github.com/B45i/React-on-pico-w');
